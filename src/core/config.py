@@ -1,10 +1,9 @@
 from pydantic_settings import BaseSettings
 from typing import Dict, List, Optional, Tuple
 import os
-from dataclasses import dataclass
+from dataclasses import field
 
-@dataclass
-class Settings:
+class Settings(BaseSettings):
     # Model settings
     SEQUENCE_LENGTH: int = 32
     N_FEATURES: int = 4  # pitch, velocity, duration, time_since_last
@@ -59,53 +58,56 @@ class Settings:
     VALIDATION_SPLIT: float = 0.2
     MIN_DELTA: float = 0.001
 
-class Settings(BaseSettings):
-    # Application settings
-    APP_NAME: str = "FL Studio AI Assistant Pro"
-    VERSION: str = "1.0.0"
-    DEBUG: bool = True
-    
-    # MIDI settings
-    MIDI_OUTPUT_PORT: Optional[str] = None
-    DEFAULT_TEMPO: int = 120
-    DEFAULT_TIME_SIGNATURE: str = "4/4"
-    
-    # AI Model settings
-    MODEL_PATH: str = "models/weights"
-    
-    # Storage settings
-    PROJECTS_DIR: str = "projects"
-    TEMPLATES_DIR: str = "templates"
-    EXPORTS_DIR: str = "exports"
-    
-    # User settings
-    DEFAULT_USER: str = "default"
-    MAX_PROJECTS_PER_USER: int = 100
-    
-    # Scenario templates
-    SCENARIOS: Dict[str, Dict] = {
-        "full_song": {
-            "sections": ["intro", "verse", "chorus", "bridge", "outro"],
-            "transitions": True,
-            "variations": True
-        },
-        "loop_based": {
-            "sections": ["main_loop", "variation_1", "variation_2"],
-            "transitions": False,
-            "variations": True
-        },
-        "live_performance": {
-            "sections": ["intro", "main", "breakdown", "build", "drop"],
-            "transitions": True,
-            "variations": True
-        }
-    }
-    
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
 
 settings = Settings()
+
+# Create necessary directories
+for directory in [settings.DATA_DIR, settings.PROCESSED_DATA_DIR, settings.MODEL_DIR]:
+    os.makedirs(directory, exist_ok=True)
+
+# Application settings
+settings.APP_NAME = "FL Studio AI Assistant Pro"
+settings.VERSION = "1.0.0"
+settings.DEBUG = True
+
+# MIDI settings
+settings.MIDI_OUTPUT_PORT = None
+settings.DEFAULT_TEMPO = 120
+settings.DEFAULT_TIME_SIGNATURE = "4/4"
+
+# AI Model settings
+settings.MODEL_PATH = "models/weights"
+
+# Storage settings
+settings.PROJECTS_DIR = "projects"
+settings.TEMPLATES_DIR = "templates"
+settings.EXPORTS_DIR = "exports"
+
+# User settings
+settings.DEFAULT_USER = "default"
+settings.MAX_PROJECTS_PER_USER = 100
+
+# Scenario templates
+settings.SCENARIOS = {
+    "full_song": {
+        "sections": ["intro", "verse", "chorus", "bridge", "outro"],
+        "transitions": True,
+        "variations": True
+    },
+    "loop_based": {
+        "sections": ["main_loop", "variation_1", "variation_2"],
+        "transitions": False,
+        "variations": True
+    },
+    "live_performance": {
+        "sections": ["intro", "main", "breakdown", "build", "drop"],
+        "transitions": True,
+        "variations": True
+    }
+}
 
 # Create necessary directories
 for directory in [settings.PROJECTS_DIR, settings.TEMPLATES_DIR, settings.EXPORTS_DIR, settings.MODEL_PATH]:
