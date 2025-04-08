@@ -1,0 +1,23 @@
+{
+    "name": "FL Studio AI Assistant",
+    "image": "mcr.microsoft.com/devcontainers/python:3.12",
+    "features": {
+        "ghcr.io/devcontainers/features/python:1": {
+            "version": "3.12"
+        }
+    },
+    "forwardPorts": [8501],
+    "postCreateCommand": "pip install -r requirements.txt",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance"
+            ]
+        }
+    },
+    "hostRequirements": {
+        "memory": "8gb",
+        "storage": "32gb"
+    }
+} 
