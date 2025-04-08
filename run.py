@@ -19,7 +19,10 @@ def main():
             print(f"Error: Could not find app.py at {app_path}")
             sys.exit(1)
         
-        # Run the Streamlit app
+        # Check if we're running in a Codespace
+        is_codespace = os.environ.get("CODESPACES") == "true"
+        
+        # Run the Streamlit app with appropriate settings
         sys.argv = [
             "streamlit",
             "run",
@@ -27,8 +30,15 @@ def main():
             "--global.developmentMode=false",
             "--server.headless=true",
             "--browser.serverAddress=localhost",
-            "--server.port=8501"
+            "--server.port=8501",
+            "--server.enableCORS=false",
+            "--server.enableXsrfProtection=false"
         ]
+        
+        if is_codespace:
+            print("Running in GitHub Codespaces - the app will be available on port 8501")
+            print("Click the 'Go Live' button in VS Code to access the application")
+        
         sys.exit(stcli.main())
     except Exception as e:
         print(f"Error running the application: {e}")

@@ -12,12 +12,25 @@
         "vscode": {
             "extensions": [
                 "ms-python.python",
-                "ms-python.vscode-pylance"
-            ]
+                "ms-python.vscode-pylance",
+                "ms-vscode.live-server"
+            ],
+            "settings": {
+                "liveServer.settings.donotShowInfoMsg": true,
+                "liveServer.settings.donotVerifyTags": true,
+                "liveServer.settings.port": 8501
+            }
         }
     },
     "hostRequirements": {
         "memory": "8gb",
         "storage": "32gb"
+    },
+    "appPort": [8501],
+    "portsAttributes": {
+        "8501": {
+            "label": "FL Studio AI Assistant",
+            "onAutoForward": "openPreview"
+        }
     }
 } 
